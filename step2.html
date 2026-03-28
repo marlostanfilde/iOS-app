@@ -5,100 +5,207 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Étape 2 - Application</title>
   <style>
-    :root {
-      --bg: #0f172a;
-      --card: rgba(255, 255, 255, 0.08);
-      --card-border: rgba(255, 255, 255, 0.12);
-      --text: #f8fafc;
-      --muted: #cbd5e1;
-      --primary: #3b82f6;
-      --primary-hover: #2563eb;
-      --radius: 22px;
+    :root{
+      --bg:#0b1220;
+      --panel:#111a2e;
+      --border:rgba(255,255,255,0.08);
+      --text:#f8fafc;
+      --muted:#94a3b8;
+      --primary:#3b82f6;
+      --primary-hover:#2563eb;
+      --secondary:rgba(255,255,255,0.06);
+      --shadow:0 20px 50px rgba(0,0,0,.35);
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
-    body {
-      background: linear-gradient(180deg, #0f172a 0%, #111827 100%);
-      color: var(--text);
-      min-height: 100vh;
-      padding: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+
+    *{box-sizing:border-box;margin:0;padding:0;font-family:Inter,Arial,sans-serif;}
+
+    body{
+      min-height:100vh;
+      background:
+        radial-gradient(circle at top, rgba(59,130,246,.18), transparent 30%),
+        linear-gradient(180deg,#0b1220 0%,#0f172a 100%);
+      color:var(--text);
+      padding:20px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
     }
-    .card {
-      width: 100%;
-      max-width: 700px;
-      background: var(--card);
-      border: 1px solid var(--card-border);
-      border-radius: var(--radius);
-      padding: 28px;
+
+    .app{width:100%;max-width:760px;}
+    .card{
+      background:rgba(17,26,46,.9);
+      border:1px solid var(--border);
+      border-radius:30px;
+      box-shadow:var(--shadow);
+      padding:28px;
     }
-    .step { color: #93c5fd; margin-bottom: 10px; font-size: 14px; }
-    h1 { font-size: 28px; margin-bottom: 10px; }
-    p, li { color: var(--muted); line-height: 1.7; }
-    .helper {
-      margin-top: 18px;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid var(--card-border);
-      border-radius: 16px;
-      padding: 16px;
+
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      margin-bottom:22px;
+      flex-wrap:wrap;
     }
-    ol { padding-left: 18px; margin-top: 8px; }
-    .actions {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-top: 22px;
+
+    .badge{
+      font-size:13px;
+      color:#bfdbfe;
+      background:rgba(59,130,246,.12);
+      border:1px solid rgba(59,130,246,.25);
+      padding:8px 14px;
+      border-radius:999px;
     }
-    .btn {
-      border: none;
-      text-decoration: none;
-      padding: 13px 18px;
-      border-radius: 14px;
-      font-weight: bold;
-      cursor: pointer;
-      display: inline-flex;
-      justify-content: center;
-      align-items: center;
+
+    .step{font-size:13px;color:var(--muted);}
+
+    .icon{
+      width:52px;
+      height:52px;
+      border-radius:16px;
+      background:rgba(59,130,246,.12);
+      border:1px solid rgba(59,130,246,.22);
+      color:#bfdbfe;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:22px;
+      font-weight:700;
+      margin-bottom:18px;
     }
-    .btn-primary { background: var(--primary); color: white; }
-    .btn-primary:hover { background: var(--primary-hover); }
-    .btn-secondary {
-      background: rgba(255,255,255,0.08);
-      color: white;
-      border: 1px solid var(--card-border);
+
+    h1{
+      font-size:34px;
+      line-height:1.1;
+      margin-bottom:10px;
+      letter-spacing:-0.02em;
     }
-    .btn[disabled] {
-      opacity: 0.55;
-      pointer-events: none;
+
+    .subtitle{
+      color:var(--muted);
+      line-height:1.7;
+      font-size:15px;
+      margin-bottom:22px;
     }
-    @media (max-width: 520px) {
-      .actions { flex-direction: column; }
-      .btn { width: 100%; }
-      h1 { font-size: 24px; }
+
+    .info{
+      background:rgba(255,255,255,.04);
+      border:1px solid var(--border);
+      border-radius:22px;
+      padding:20px;
+      margin-bottom:20px;
+    }
+
+    .info h2{
+      font-size:18px;
+      margin-bottom:10px;
+    }
+
+    .info ol{
+      padding-left:18px;
+    }
+
+    .info li{
+      color:var(--muted);
+      line-height:1.8;
+      margin-bottom:4px;
+    }
+
+    .actions{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top:10px;
+      margin-bottom:20px;
+    }
+
+    .btn{
+      text-decoration:none;
+      border:none;
+      padding:14px 18px;
+      border-radius:16px;
+      font-weight:700;
+      font-size:15px;
+      cursor:pointer;
+      transition:.2s ease;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .btn-primary{
+      background:var(--primary);
+      color:#fff;
+      box-shadow:0 10px 25px rgba(59,130,246,.22);
+    }
+
+    .btn-primary:hover{
+      background:var(--primary-hover);
+      transform:translateY(-1px);
+    }
+
+    .btn-secondary{
+      background:var(--secondary);
+      color:#fff;
+      border:1px solid var(--border);
+    }
+
+    .btn-disabled{
+      background:rgba(255,255,255,.05);
+      color:#6b7280;
+      border:1px solid var(--border);
+      cursor:not-allowed;
+    }
+
+    .nav{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      margin-top:24px;
+      flex-wrap:wrap;
+    }
+
+    @media (max-width:520px){
+      .card{padding:20px;}
+      h1{font-size:28px;}
+      .actions,.nav{flex-direction:column;}
+      .btn{width:100%;}
     }
   </style>
 </head>
 <body>
-  <div class="card">
-    <div class="step">Étape 2 sur 4</div>
-    <h1>Installation de l’application</h1>
-    <p>Le lien de téléchargement pourra être ajouté ici plus tard.</p>
+  <div class="app">
+    <section class="card">
+      <div class="topbar">
+        <div class="badge">Mini App Telegram</div>
+        <div class="step">Étape 2 sur 4</div>
+      </div>
 
-    <div class="actions">
-      <button class="btn btn-secondary" disabled>Téléchargement bientôt disponible</button>
-      <a class="btn btn-secondary" href="step1.html">Retour</a>
-      <a class="btn btn-primary" href="step3.html">Étape suivante</a>
-    </div>
+      <div class="icon">2</div>
+      <h1>Installer l’application</h1>
+      <p class="subtitle">
+        Cette étape servira à ajouter ton lien de téléchargement d’application quand il sera prêt.
+      </p>
 
-    <div class="helper">
-      <strong>Instructions</strong>
-      <ol>
-        <li>Ajoute ici ton futur lien de téléchargement.</li>
-        <li>L’utilisateur pourra cliquer dessus quand il sera prêt.</li>
-        <li>Ensuite, il passera à l’étape 3.</li>
-      </ol>
-    </div>
+      <div class="actions">
+        <button class="btn btn-disabled">Téléchargement bientôt disponible</button>
+      </div>
+
+      <div class="info">
+        <h2>Instructions</h2>
+        <ol>
+          <li>Ajoute ici ton futur lien d’application.</li>
+          <li>Le bouton pourra ensuite être activé.</li>
+          <li>Une fois prêt, l’utilisateur passe à l’étape suivante.</li>
+        </ol>
+      </div>
+
+      <div class="nav">
+        <a href="step1.html" class="btn btn-secondary">Retour</a>
+        <a href="step3.html" class="btn btn-primary">Étape suivante</a>
+      </div>
+    </section>
   </div>
 </body>
 </html>

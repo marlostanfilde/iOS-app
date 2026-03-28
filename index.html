@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>iOS Mini App</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: white;
+      text-align: center;
+      padding: 40px;
+    }
+
+    .card {
+      max-width: 420px;
+      margin: auto;
+      background: #1e293b;
+      padding: 24px;
+      border-radius: 16px;
+      box-shadow: 0 0 20px rgba(255,255,255,0.08);
+    }
+
+    button {
+      background: #38bdf8;
+      color: black;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>iOS Store</h1>
+    <p>Bienvenue dans ma mini app Telegram iOS.</p>
+    <button onclick="acheter()">Voir les produits</button>
+  </div>
+
+  <script>
+    const tg = window.Telegram.WebApp;
+    tg.expand();
+
+    function acheter() {
+      alert("Mini App iOS OK");
+    }
+  </script>
+</body>
+</html>

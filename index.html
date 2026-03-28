@@ -3,78 +3,500 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>iOS App</title>
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <title>Installation guidée</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #0f172a;
-      color: white;
+    :root {
+      --bg: #0f172a;
+      --card: rgba(255, 255, 255, 0.08);
+      --card-border: rgba(255, 255, 255, 0.12);
+      --text: #f8fafc;
+      --muted: #cbd5e1;
+      --primary: #3b82f6;
+      --primary-hover: #2563eb;
+      --success: #22c55e;
+      --shadow: 0 10px 30px rgba(0,0,0,0.25);
+      --radius: 22px;
+    }
+
+    * {
+      box-sizing: border-box;
       margin: 0;
+      padding: 0;
+      font-family: Inter, Arial, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(180deg, #0f172a 0%, #111827 100%);
+      color: var(--text);
+      min-height: 100vh;
       padding: 24px;
     }
-    .card {
-      max-width: 520px;
-      margin: auto;
-      background: #1e293b;
-      padding: 24px;
-      border-radius: 16px;
-      box-shadow: 0 0 20px rgba(255,255,255,0.08);
+
+    .container {
+      max-width: 980px;
+      margin: 0 auto;
     }
-    h1, h2 {
-      margin-top: 0;
+
+    .hero {
+      background: linear-gradient(135deg, rgba(59,130,246,0.18), rgba(34,197,94,0.10));
+      border: 1px solid var(--card-border);
+      border-radius: 28px;
+      padding: 28px;
+      box-shadow: var(--shadow);
+      margin-bottom: 24px;
     }
-    .btn {
+
+    .badge {
       display: inline-block;
-      text-decoration: none;
-      background: #38bdf8;
-      color: black;
-      padding: 14px 18px;
-      border-radius: 12px;
-      font-weight: bold;
-      margin: 16px 0 24px;
+      background: rgba(59,130,246,0.18);
+      color: #bfdbfe;
+      border: 1px solid rgba(59,130,246,0.3);
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      margin-bottom: 14px;
     }
-    ol {
-      text-align: left;
+
+    h1 {
+      font-size: 32px;
+      line-height: 1.15;
+      margin-bottom: 10px;
+    }
+
+    .hero p {
+      color: var(--muted);
+      font-size: 16px;
       line-height: 1.6;
-      padding-left: 20px;
+      max-width: 700px;
     }
-    .note {
+
+    .progress {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin: 22px 0 0;
+    }
+
+    .progress-step {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--card-border);
+      color: var(--muted);
+      padding: 12px;
+      border-radius: 16px;
+      text-align: center;
       font-size: 14px;
-      opacity: 0.9;
+    }
+
+    .progress-step.active {
+      background: rgba(59,130,246,0.22);
+      color: white;
+      border-color: rgba(59,130,246,0.35);
+    }
+
+    .section {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(8px);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+
+    .section-title-wrap {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+
+    .step-number {
+      width: 42px;
+      height: 42px;
+      min-width: 42px;
+      border-radius: 14px;
+      background: rgba(59,130,246,0.18);
+      border: 1px solid rgba(59,130,246,0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 18px;
+      color: #dbeafe;
+    }
+
+    h2 {
+      font-size: 22px;
+      margin-bottom: 6px;
+    }
+
+    .section p,
+    .section li {
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 15px;
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+
+    .btn {
+      appearance: none;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      border-radius: 14px;
+      padding: 13px 18px;
+      font-size: 14px;
+      font-weight: 600;
+      transition: 0.2s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.08);
+      color: white;
+      border: 1px solid var(--card-border);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255,255,255,0.12);
+    }
+
+    .btn-success {
+      background: var(--success);
+      color: white;
+    }
+
+    .helper {
       margin-top: 16px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 16px;
+    }
+
+    .helper h3 {
+      font-size: 16px;
+      margin-bottom: 10px;
+      color: #e2e8f0;
+    }
+
+    .helper ol {
+      padding-left: 18px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .ipa-card {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 18px;
+    }
+
+    .ipa-card h3 {
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+
+    .ipa-card p {
+      margin-bottom: 14px;
+    }
+
+    .mini-label {
+      display: inline-block;
+      font-size: 12px;
+      color: #fde68a;
+      background: rgba(245,158,11,0.15);
+      border: 1px solid rgba(245,158,11,0.28);
+      border-radius: 999px;
+      padding: 6px 10px;
+      margin-bottom: 12px;
+    }
+
+    .finish-box {
+      text-align: center;
+      padding: 18px 6px 4px;
+    }
+
+    .success-icon {
+      width: 74px;
+      height: 74px;
+      border-radius: 50%;
+      margin: 0 auto 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(34,197,94,0.18);
+      border: 1px solid rgba(34,197,94,0.35);
+      color: #bbf7d0;
+      font-size: 34px;
+      font-weight: 800;
+    }
+
+    .muted-note {
+      font-size: 13px;
+      color: #94a3b8;
+      margin-top: 10px;
+    }
+
+    .footer {
+      text-align: center;
+      color: #94a3b8;
+      font-size: 13px;
+      margin-top: 24px;
+      padding-bottom: 24px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .btn[disabled] {
+      opacity: 0.55;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    @media (max-width: 820px) {
+      .progress {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .cards {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 26px;
+      }
+
+      h2 {
+        font-size: 20px;
+      }
+    }
+
+    @media (max-width: 520px) {
+      body {
+        padding: 16px;
+      }
+
+      .hero,
+      .section {
+        padding: 18px;
+      }
+
+      .progress {
+        grid-template-columns: 1fr;
+      }
+
+      .actions {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="card">
-    <h1>Installation du profil iPhone</h1>
-    <p>Télécharge le profil de configuration pour continuer.</p>
+  <div class="container">
+    <section class="hero">
+      <span class="badge">Mini App Telegram</span>
+      <h1>Installation guidée en 4 étapes</h1>
+      <p>
+        Suivez les étapes ci-dessous pour terminer la configuration. Chaque section contient
+        les boutons nécessaires ainsi qu’un espace d’aide pour accompagner l’utilisateur.
+      </p>
 
-    <a class="btn" href="https://marlostanfilde.github.io/iOS-app/">
-      Télécharger le profil .mobileconfig
-    </a>
+      <div class="progress">
+        <div class="progress-step active">1. Profil</div>
+        <div class="progress-step active">2. App</div>
+        <div class="progress-step active">3. Fichiers</div>
+        <div class="progress-step active">4. Fin</div>
+      </div>
+    </section>
 
-    <h2>Tutoriel d’installation</h2>
-    <ol>
-      <li>Appuie sur <strong>Télécharger le profil</strong>.</li>
-      <li>Autorise le téléchargement si iPhone te le demande.</li>
-      <li>Ouvre l’app <strong>Réglages</strong>.</li>
-      <li>Appuie sur <strong>Profil téléchargé</strong>.</li>
-      <li>Appuie sur <strong>Installer</strong> en haut à droite.</li>
-      <li>Entre ton code iPhone si demandé.</li>
-      <li>Confirme encore avec <strong>Installer</strong>.</li>
-      <li>Une fois terminé, reviens dans la mini app.</li>
-    </ol>
+    <section class="section">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <div class="step-number">1</div>
+          <div>
+            <h2>Téléchargement du profil de configuration</h2>
+            <p>Téléchargez le fichier nécessaire pour préparer l’appareil.</p>
+          </div>
+        </div>
+      </div>
 
-    <p class="note">
-      Important : installe uniquement un profil provenant d’une source de confiance.
-    </p>
+      <div class="actions">
+        <a class="btn btn-primary" href="https://marlostanfilde.github.io/iOS-app/" id="profileDownloadBtn" target="_blank">Télécharger le profil</a>
+        <button class="btn btn-secondary" onclick="toggleBlock('guide1')">Voir les instructions</button>
+      </div>
+
+      <div class="helper hidden" id="guide1">
+        <h3>Instructions</h3>
+        <ol>
+          <li>Téléchargez le fichier depuis le bouton ci-dessus.</li>
+          <li>Ouvrez ensuite les réglages de votre appareil.</li>
+          <li>Repérez la notification ou la section liée au profil téléchargé.</li>
+          <li>Suivez les indications affichées à l’écran pour terminer l’installation.</li>
+          <li>Une fois terminé, revenez dans l’application pour passer à l’étape suivante.</li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <div class="step-number">2</div>
+          <div>
+            <h2>Installation de l’application requise</h2>
+            <p>Téléchargement bientôt disponible.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn btn-secondary" disabled>Téléchargement bientôt disponible</button>
+        <button class="btn btn-secondary" onclick="toggleBlock('guide2')">Voir les instructions</button>
+      </div>
+
+      <div class="helper hidden" id="guide2">
+        <h3>Instructions</h3>
+        <ol>
+          <li>Le lien de téléchargement sera ajouté ici plus tard.</li>
+          <li>Quand il sera prêt, il suffira de cliquer sur le bouton.</li>
+          <li>Ensuite, revenez ici pour continuer vers l’étape 3.</li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <div class="step-number">3</div>
+          <div>
+            <h2>Téléchargement des fichiers</h2>
+            <p>Les liens seront ajoutés ici dès qu’ils seront prêts.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="cards">
+        <div class="ipa-card">
+          <span class="mini-label">Option 1</span>
+          <h3>IPA 1</h3>
+          <p>Premier fichier. Lien bientôt disponible.</p>
+          <div class="actions">
+            <button class="btn btn-secondary" disabled>Copier le lien</button>
+            <button class="btn btn-primary" disabled>Télécharger</button>
+          </div>
+        </div>
+
+        <div class="ipa-card">
+          <span class="mini-label">Option 2</span>
+          <h3>IPA 2</h3>
+          <p>Deuxième fichier. Lien bientôt disponible.</p>
+          <div class="actions">
+            <button class="btn btn-secondary" disabled>Copier le lien</button>
+            <button class="btn btn-primary" disabled>Télécharger</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="helper" style="margin-top:18px;">
+        <h3>Informations</h3>
+        <ol>
+          <li>Les liens de téléchargement seront ajoutés ici plus tard.</li>
+          <li>Les boutons seront activés dès que les fichiers seront disponibles.</li>
+          <li>Tu pourras ensuite mettre les vrais liens directement dans le code.</li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <div class="step-number">4</div>
+          <div>
+            <h2>Page de fin</h2>
+            <p>Le parcours se termine ici avec un message de succès et une option pour recommencer.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="finish-box">
+        <div class="success-icon">✓</div>
+        <h2 style="margin-bottom:10px;">Installation terminée</h2>
+        <p style="max-width:620px; margin:0 auto; color:var(--muted);">
+          Votre configuration est maintenant finalisée. Vous pouvez fermer cette page
+          ou relancer le processus si nécessaire.
+        </p>
+
+        <div class="actions" style="justify-content:center; margin-top:22px;">
+          <button class="btn btn-success" onclick="restartProcess()">Recommencer</button>
+          <button class="btn btn-secondary" onclick="scrollToTop()">Retour en haut</button>
+        </div>
+
+        <p class="muted-note">Les autres liens pourront être ajoutés plus tard.</p>
+      </div>
+    </section>
+
+    <div class="footer">
+      Interface prête à être intégrée dans une mini app Telegram.
+    </div>
   </div>
 
   <script>
-    const tg = window.Telegram.WebApp;
-    tg.expand();
+    function toggleBlock(id) {
+      const el = document.getElementById(id);
+      el.classList.toggle('hidden');
+    }
+
+    function restartProcess() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
+
+    function scrollToTop() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
   </script>
 </body>
 </html>

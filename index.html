@@ -3,52 +3,78 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>iOS Mini App</title>
+  <title>iOS App</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
     body {
       font-family: Arial, sans-serif;
       background: #0f172a;
       color: white;
-      text-align: center;
-      padding: 40px;
+      margin: 0;
+      padding: 24px;
     }
-
     .card {
-      max-width: 420px;
+      max-width: 520px;
       margin: auto;
       background: #1e293b;
       padding: 24px;
       border-radius: 16px;
       box-shadow: 0 0 20px rgba(255,255,255,0.08);
     }
-
-    button {
+    h1, h2 {
+      margin-top: 0;
+    }
+    .btn {
+      display: inline-block;
+      text-decoration: none;
       background: #38bdf8;
       color: black;
-      border: none;
-      padding: 12px 20px;
-      border-radius: 10px;
+      padding: 14px 18px;
+      border-radius: 12px;
       font-weight: bold;
-      cursor: pointer;
-      margin-top: 20px;
+      margin: 16px 0 24px;
+    }
+    ol {
+      text-align: left;
+      line-height: 1.6;
+      padding-left: 20px;
+    }
+    .note {
+      font-size: 14px;
+      opacity: 0.9;
+      margin-top: 16px;
     }
   </style>
 </head>
 <body>
   <div class="card">
-    <h1>iOS Store</h1>
-    <p>Bienvenue dans ma mini app Telegram iOS.</p>
-    <button onclick="acheter()">Voir les produits</button>
+    <h1>Installation du profil iPhone</h1>
+    <p>Télécharge le profil de configuration pour continuer.</p>
+
+    <a class="btn" href="https://marlostanfilde.github.io/iOS-app/">
+      Télécharger le profil .mobileconfig
+    </a>
+
+    <h2>Tutoriel d’installation</h2>
+    <ol>
+      <li>Appuie sur <strong>Télécharger le profil</strong>.</li>
+      <li>Autorise le téléchargement si iPhone te le demande.</li>
+      <li>Ouvre l’app <strong>Réglages</strong>.</li>
+      <li>Appuie sur <strong>Profil téléchargé</strong>.</li>
+      <li>Appuie sur <strong>Installer</strong> en haut à droite.</li>
+      <li>Entre ton code iPhone si demandé.</li>
+      <li>Confirme encore avec <strong>Installer</strong>.</li>
+      <li>Une fois terminé, reviens dans la mini app.</li>
+    </ol>
+
+    <p class="note">
+      Important : installe uniquement un profil provenant d’une source de confiance.
+    </p>
   </div>
 
   <script>
     const tg = window.Telegram.WebApp;
     tg.expand();
-
-    function acheter() {
-      alert("Mini App iOS OK");
-    }
   </script>
 </body>
 </html>

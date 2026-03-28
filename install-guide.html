@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guide d'Installation</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #13131a;
+    --card: #1a1a26;
+    --border: #2a2a3d;
+    --accent: #6c63ff;
+    --accent2: #ff6584;
+    --accent3: #43e97b;
+    --text: #e8e8f0;
+    --muted: #6b6b8a;
+    --white: #ffffff;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Syne', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* BACKGROUND GRID */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(108,99,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(108,99,255,0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* GLOW ORBS */
+  .orb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(80px);
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.18;
+  }
+  .orb-1 { width: 400px; height: 400px; background: var(--accent); top: -100px; left: -100px; }
+  .orb-2 { width: 300px; height: 300px; background: var(--accent2); bottom: -80px; right: -80px; }
+  .orb-3 { width: 250px; height: 250px; background: var(--accent3); bottom: 100px; left: 200px; opacity: 0.1; }
+
+  /* PROGRESS BAR */
+  .progress-bar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--border);
+    z-index: 100;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 0 12px rgba(108,99,255,0.8);
+  }
+
+  /* STEP DOTS */
+  .step-dots {
+    position: fixed;
+    top: 24px; left: 50%;
+    transform: translateX(-50%);
+    display: flex; gap: 10px;
+    z-index: 100;
+  }
+  .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--border);
+    transition: all 0.4s ease;
+  }
+  .dot.active { background: var(--accent); box-shadow: 0 0 8px var(--accent); transform: scale(1.3); }
+  .dot.done { background: var(--accent3); }
+
+  /* PAGES */
+  .pages {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+  }
+
+  .page {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 24px 40px;
+    opacity: 0;
+    transform: translateX(60px);
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+  }
+
+  .page.active {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: all;
+  }
+
+  .page.exit {
+    opacity: 0;
+    transform: translateX(-60px);
+  }
+
+  /* PAGE HEADER */
+  .page-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: rgba(108,99,255,0.12);
+    border: 1px solid rgba(108,99,255,0.3);
+    padding: 5px 14px;
+    border-radius: 20px;
+    margin-bottom: 18px;
+  }
+
+  h1 {
+    font-size: clamp(26px, 5vw, 40px);
+    font-weight: 800;
+    text-align: center;
+    line-height: 1.1;
+    margin-bottom: 10px;
+    letter-spacing: -0.5px;
+  }
+
+  h1 span { color: var(--accent); }
+
+  .subtitle {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    text-align: center;
+    margin-bottom: 40px;
+    max-width: 380px;
+  }
+
+  /* CARDS CONTAINER */
+  .cards {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    width: 100%;
+    max-width: 420px;
+  }
+
+  .cards.row {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .cards.row .btn-card { flex: 1; min-width: 140px; }
+
+  /* BUTTON CARDS */
+  .btn-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px 24px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .btn-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(108,99,255,0.08), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .btn-card:hover::before { opacity: 1; }
+  .btn-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(108,99,255,0.2);
+  }
+
+  .btn-card:active { transform: translateY(0); }
+
+  .btn-card.downloaded {
+    border-color: var(--accent3);
+    background: rgba(67,233,123,0.06);
+  }
+
+  .btn-card.downloading .icon-wrap { animation: spin 1s linear infinite; }
+
+  /* ICON */
+  .icon-wrap {
+    width: 46px; height: 46px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+    transition: transform 0.3s;
+  }
+
+  .icon-wrap.purple { background: rgba(108,99,255,0.2); }
+  .icon-wrap.pink   { background: rgba(255,101,132,0.2); }
+  .icon-wrap.green  { background: rgba(67,233,123,0.2); }
+  .icon-wrap.blue   { background: rgba(67,140,255,0.2); }
+
+  .btn-card:hover .icon-wrap { transform: scale(1.1) rotate(-3deg); }
+
+  /* TEXT IN CARD */
+  .card-text { flex: 1; }
+  .card-title {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 3px;
+  }
+  .card-desc {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  /* ARROW */
+  .card-arrow {
+    font-size: 18px;
+    color: var(--muted);
+    transition: all 0.3s;
+  }
+  .btn-card:hover .card-arrow { color: var(--accent); transform: translateX(4px); }
+  .btn-card.downloaded .card-arrow { color: var(--accent3); }
+
+  /* STATUS BADGE */
+  .status-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 10px;
+    font-weight: 500;
+  }
+  .status-badge.done { background: rgba(67,233,123,0.15); color: var(--accent3); border: 1px solid rgba(67,233,123,0.3); }
+  .status-badge.loading { background: rgba(108,99,255,0.15); color: var(--accent); border: 1px solid rgba(108,99,255,0.3); }
+
+  /* NEXT BUTTON */
+  .btn-next {
+    margin-top: 32px;
+    padding: 14px 40px;
+    border-radius: 50px;
+    border: none;
+    background: linear-gradient(135deg, var(--accent), #8b7fff);
+    color: white;
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 4px 20px rgba(108,99,255,0.4);
+    letter-spacing: 0.3px;
+  }
+
+  .btn-next:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(108,99,255,0.6);
+  }
+
+  .btn-next:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  /* SUCCESS PAGE */
+  .success-icon {
+    width: 100px; height: 100px;
+    border-radius: 50%;
+    background: rgba(67,233,123,0.15);
+    border: 2px solid rgba(67,233,123,0.4);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 48px;
+    margin-bottom: 28px;
+    animation: pulse-success 2s ease-in-out infinite;
+    box-shadow: 0 0 40px rgba(67,233,123,0.2);
+  }
+
+  @keyframes pulse-success {
+    0%, 100% { box-shadow: 0 0 40px rgba(67,233,123,0.2); }
+    50% { box-shadow: 0 0 60px rgba(67,233,123,0.4); }
+  }
+
+  .success-title {
+    font-size: clamp(28px, 6vw, 44px);
+    font-weight: 800;
+    text-align: center;
+    margin-bottom: 12px;
+    color: var(--accent3);
+  }
+
+  .success-sub {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    text-align: center;
+    max-width: 300px;
+    line-height: 1.6;
+    margin-bottom: 40px;
+  }
+
+  .btn-restart {
+    padding: 14px 40px;
+    border-radius: 50px;
+    border: 2px solid var(--accent3);
+    background: transparent;
+    color: var(--accent3);
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .btn-restart:hover {
+    background: rgba(67,233,123,0.12);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(67,233,123,0.2);
+  }
+
+  /* CHECKLIST */
+  .checklist {
+    width: 100%;
+    max-width: 420px;
+    margin-bottom: 32px;
+  }
+
+  .check-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+  }
+
+  .check-item:last-child { border-bottom: none; }
+
+  .check-circle {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px;
+    flex-shrink: 0;
+    transition: all 0.3s;
+  }
+
+  .check-circle.done {
+    background: var(--accent3);
+    border-color: var(--accent3);
+    color: #000;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  /* SEPARATOR */
+  .sep {
+    width: 60px; height: 2px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+    margin: 10px auto 24px;
+    border-radius: 2px;
+  }
+
+  /* STEP 3 TRIPLE GRID */
+  .triple-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    max-width: 420px;
+  }
+
+  /* Glitch label on step 1 */
+  .step-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 28px;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<!-- BACKGROUND -->
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+
+<!-- PROGRESS -->
+<div class="progress-bar">
+  <div class="progress-fill" id="progressFill" style="width:25%"></div>
+</div>
+
+<!-- DOTS -->
+<div class="step-dots">
+  <div class="dot active" id="dot-0"></div>
+  <div class="dot" id="dot-1"></div>
+  <div class="dot" id="dot-2"></div>
+  <div class="dot" id="dot-3"></div>
+</div>
+
+<!-- PAGES -->
+<div class="pages">
+
+  <!-- PAGE 1 : Télécharger les vidéos -->
+  <div class="page active" id="page-0">
+    <div class="page-badge">Étape 01 / 04</div>
+    <h1>Télécharger les <span>vidéos</span></h1>
+    <div class="sep"></div>
+    <p class="subtitle">Télécharge les 2 vidéos tutoriels avant de continuer.</p>
+
+    <div class="cards" style="max-width:420px">
+      <div class="btn-card" id="dl-video1" onclick="handleDownload('dl-video1', 'VIDEO_URL_1_ICI', 'video1')">
+        <div class="icon-wrap purple">🎬</div>
+        <div class="card-text">
+          <div class="card-title">Vidéo Tutoriel 1</div>
+          <div class="card-desc">Remplace le lien par ta vidéo</div>
+        </div>
+        <span class="card-arrow">↓</span>
+      </div>
+
+      <div class="btn-card" id="dl-video2" onclick="handleDownload('dl-video2', 'VIDEO_URL_2_ICI', 'video2')">
+        <div class="icon-wrap pink">🎬</div>
+        <div class="card-text">
+          <div class="card-title">Vidéo Tutoriel 2</div>
+          <div class="card-desc">Remplace le lien par ta vidéo</div>
+        </div>
+        <span class="card-arrow">↓</span>
+      </div>
+    </div>
+
+    <button class="btn-next" id="next-0" onclick="goToPage(1)">
+      Suivant <span>→</span>
+    </button>
+  </div>
+
+  <!-- PAGE 2 : Installer eSign -->
+  <div class="page" id="page-1">
+    <div class="page-badge">Étape 02 / 04</div>
+    <h1>Installer <span>eSign</span></h1>
+    <div class="sep"></div>
+    <p class="subtitle">Installe l'application eSign pour pouvoir signer tes IPA.</p>
+
+    <div class="cards" style="max-width:420px">
+      <div class="btn-card" id="dl-esign" onclick="handleDownload('dl-esign', 'LIEN_ESIGN_ICI', 'esign')">
+        <div class="icon-wrap green">✍️</div>
+        <div class="card-text">
+          <div class="card-title">Télécharger eSign</div>
+          <div class="card-desc">Application de signature IPA</div>
+        </div>
+        <span class="card-arrow">↓</span>
+      </div>
+    </div>
+
+    <button class="btn-next" id="next-1" onclick="goToPage(2)">
+      Suivant <span>→</span>
+    </button>
+  </div>
+
+  <!-- PAGE 3 : IPA + eSign install -->
+  <div class="page" id="page-2">
+    <div class="page-badge">Étape 03 / 04</div>
+    <h1>Installer l'<span>IPA</span></h1>
+    <div class="sep"></div>
+    <p class="subtitle">Télécharge et installe l'IPA via eSign en 3 étapes.</p>
+
+    <div class="triple-grid">
+
+      <div class="btn-card" id="dl-ipa" onclick="handleDownload('dl-ipa', 'LIEN_IPA_ICI', 'ipa')">
+        <div class="icon-wrap purple">📦</div>
+        <div class="card-text">
+          <div class="card-title">1 — Télécharger le fichier IPA</div>
+          <div class="card-desc">Fichier d'application .ipa</div>
+        </div>
+        <span class="card-arrow">↓</span>
+      </div>
+
+      <div class="btn-card" id="dl-esign2" onclick="handleDownload('dl-esign2', 'LIEN_ESIGN_ICI', 'esign2')">
+        <div class="icon-wrap blue">✍️</div>
+        <div class="card-text">
+          <div class="card-title">2 — Ouvrir eSign</div>
+          <div class="card-desc">Lance eSign pour importer l'IPA</div>
+        </div>
+        <span class="card-arrow">↗</span>
+      </div>
+
+      <div class="btn-card" id="dl-install" onclick="handleDownload('dl-install', 'LIEN_INSTALLATION_ICI', 'install')">
+        <div class="icon-wrap green">⚙️</div>
+        <div class="card-text">
+          <div class="card-title">3 — Installer l'application</div>
+          <div class="card-desc">Finalise l'installation via eSign</div>
+        </div>
+        <span class="card-arrow">✓</span>
+      </div>
+
+    </div>
+
+    <button class="btn-next" id="next-2" onclick="goToPage(3)">
+      Terminer <span>✓</span>
+    </button>
+  </div>
+
+  <!-- PAGE 4 : Succès -->
+  <div class="page" id="page-3">
+    <div class="success-icon">✓</div>
+    <div class="success-title">Tout est installé !</div>
+    <p class="success-sub">L'installation s'est déroulée avec succès. Tu peux maintenant profiter de l'application.</p>
+
+    <div class="checklist">
+      <div class="check-item">
+        <div class="check-circle done">✓</div>
+        <span>Vidéos téléchargées</span>
+      </div>
+      <div class="check-item">
+        <div class="check-circle done">✓</div>
+        <span>eSign installé</span>
+      </div>
+      <div class="check-item">
+        <div class="check-circle done">✓</div>
+        <span>IPA installé via eSign</span>
+      </div>
+    </div>
+
+    <button class="btn-restart" onclick="restart()">
+      ↺ Recommencer depuis le début
+    </button>
+  </div>
+
+</div>
+
+<script>
+  let currentPage = 0;
+
+  const downloads = {};
+
+  function goToPage(n) {
+    const prev = document.getElementById('page-' + currentPage);
+    prev.classList.remove('active');
+    prev.classList.add('exit');
+
+    setTimeout(() => { prev.classList.remove('exit'); }, 500);
+
+    currentPage = n;
+
+    const next = document.getElementById('page-' + n);
+    next.style.transform = 'translateX(60px)';
+    next.style.opacity = '0';
+
+    requestAnimationFrame(() => {
+      next.classList.add('active');
+      next.style.transform = '';
+      next.style.opacity = '';
+    });
+
+    // Update progress
+    const pct = ((n + 1) / 4) * 100;
+    document.getElementById('progressFill').style.width = pct + '%';
+
+    // Update dots
+    for (let i = 0; i < 4; i++) {
+      const dot = document.getElementById('dot-' + i);
+      dot.className = 'dot';
+      if (i < n) dot.classList.add('done');
+      else if (i === n) dot.classList.add('active');
+    }
+  }
+
+  function handleDownload(cardId, url, key) {
+    const card = document.getElementById(cardId);
+    if (card.classList.contains('downloaded')) return;
+
+    // Simulate download start
+    card.classList.add('downloading');
+    const arrow = card.querySelector('.card-arrow');
+    arrow.textContent = '⏳';
+
+    // Open the URL
+    if (url && !url.includes('_ICI')) {
+      window.open(url, '_blank');
+    }
+
+    // Simulate completion after 1.5s
+    setTimeout(() => {
+      card.classList.remove('downloading');
+      card.classList.add('downloaded');
+      arrow.textContent = '✓';
+      arrow.style.color = 'var(--accent3)';
+      downloads[key] = true;
+
+      // Add done badge
+      const desc = card.querySelector('.card-desc');
+      desc.innerHTML = '<span class="status-badge done">Fait ✓</span>';
+    }, 1500);
+  }
+
+  function restart() {
+    // Reset all states
+    const cards = document.querySelectorAll('.btn-card');
+    cards.forEach(card => {
+      card.classList.remove('downloaded', 'downloading');
+    });
+
+    // Reset arrows
+    document.querySelectorAll('.card-arrow').forEach((a, i) => {
+      const defaults = ['↓','↓','↓','↗','✓'];
+      a.textContent = ['↓','↓','↓','↗','✓'][i] || '↓';
+      a.style.color = '';
+    });
+
+    // Reset descs
+    const descs = [
+      'Remplace le lien par ta vidéo',
+      'Remplace le lien par ta vidéo',
+      'Application de signature IPA',
+      'Fichier d\'application .ipa',
+      'Lance eSign pour importer l\'IPA',
+      'Finalise l\'installation via eSign'
+    ];
+    document.querySelectorAll('.card-desc').forEach((d, i) => {
+      d.innerHTML = descs[i] || '';
+    });
+
+    for (const k in downloads) delete downloads[k];
+
+    goToPage(0);
+  }
+</script>
+</body>
+</html>

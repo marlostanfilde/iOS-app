@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Étape 1 - Profil</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card: rgba(255, 255, 255, 0.08);
+      --card-border: rgba(255, 255, 255, 0.12);
+      --text: #f8fafc;
+      --muted: #cbd5e1;
+      --primary: #3b82f6;
+      --primary-hover: #2563eb;
+      --radius: 22px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+    body {
+      background: linear-gradient(180deg, #0f172a 0%, #111827 100%);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .card {
+      width: 100%;
+      max-width: 700px;
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 28px;
+    }
+    .step { color: #93c5fd; margin-bottom: 10px; font-size: 14px; }
+    h1 { font-size: 28px; margin-bottom: 10px; }
+    p, li { color: var(--muted); line-height: 1.7; }
+    .helper {
+      margin-top: 18px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 16px;
+    }
+    ol { padding-left: 18px; margin-top: 8px; }
+    .actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 22px;
+    }
+    .btn {
+      border: none;
+      text-decoration: none;
+      padding: 13px 18px;
+      border-radius: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .btn-primary { background: var(--primary); color: white; }
+    .btn-primary:hover { background: var(--primary-hover); }
+    .btn-secondary {
+      background: rgba(255,255,255,0.08);
+      color: white;
+      border: 1px solid var(--card-border);
+    }
+    @media (max-width: 520px) {
+      .actions { flex-direction: column; }
+      .btn { width: 100%; }
+      h1 { font-size: 24px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="step">Étape 1 sur 4</div>
+    <h1>Téléchargement du profil</h1>
+    <p>Téléchargez le profil de configuration pour préparer votre appareil.</p>
+
+    <div class="actions">
+      <a class="btn btn-primary" href="https://marlostanfilde.github.io/iOS-app/" target="_blank">Télécharger le profil</a>
+      <a class="btn btn-secondary" href="step2.html">Passer à l’étape 2</a>
+    </div>
+
+    <div class="helper">
+      <strong>Instructions</strong>
+      <ol>
+        <li>Appuyez sur le bouton de téléchargement.</li>
+        <li>Ouvrez ensuite les réglages de votre appareil.</li>
+        <li>Repérez le profil téléchargé.</li>
+        <li>Suivez les indications affichées à l’écran.</li>
+      </ol>
+    </div>
+  </div>
+</body>
+</html>
